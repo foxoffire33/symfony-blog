@@ -69,10 +69,17 @@ class CategoryController extends AbstractController
     #[Route('/{id}', name: 'app_category_delete', methods: ['POST'])]
     public function delete(Request $request, Category $category, CategoryRepository $categoryRepository): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$category->getId(), $request->request->get('_token'))) {
+        if ($this->isCsrfTokenValid('delete' . $category->getId(), $request->request->get('_token'))) {
             $categoryRepository->remove($category, true);
         }
 
         return $this->redirectToRoute('app_category_index', [], Response::HTTP_SEE_OTHER);
+    }
+
+    public function navigationItems(CategoryRepository $categoryRepository): Response
+    {
+        return $this->render('layout/_nav_categories.html.twig', [
+            'categories' => $categoryRepository->findAll()
+        ]);
     }
 }
