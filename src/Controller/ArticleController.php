@@ -11,6 +11,14 @@ use Symfony\Component\Routing\Annotation\Route;
 #[Route('/article')]
 class ArticleController extends AbstractController
 {
+    #[Route('/', name: 'app_article', methods: ['GET'])]
+    public function index(Article $article): Response
+    {
+        return $this->render('article/index.html.twig', [
+            'article' => $article,
+        ]);
+    }
+
     #[Route('/{id}', name: 'app_article_show', methods: ['GET'])]
     public function show(Article $article): Response
     {
@@ -18,7 +26,4 @@ class ArticleController extends AbstractController
             'article' => $article,
         ]);
     }
-
-    public function articlesByCategory()
-    {}
 }

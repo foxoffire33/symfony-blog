@@ -23,8 +23,17 @@ class DatabaseActivitySubscriber implements EventSubscriberInterface
     {
         $entity = $args->getObject();
         $class = $args->getObjectManager()->getClassMetadata(get_class($entity));
-        if($class->hasAssociation('createdBy')){
+        if ($class->hasAssociation('createdBy')) {
             $entity->setCreatedBy($this->security->getUser());
         }
+
+        if ($entity->getId() === null && $class->hasField('createdAt')) {
+            $entity->setCreatedAt(new \DateTimeImmutable());
+        }
+
+        if ($class->hasField('updatedAt')) {
+            $entity->setUpdatedAt(new \DateTimeImmutable());
+        }
+
     }
 }

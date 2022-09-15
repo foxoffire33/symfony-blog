@@ -11,6 +11,11 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Entity(repositoryClass: ArticleRepository::class)]
 class Article
 {
+    const STATUS_NOT_PUBLICHED = 1;
+    const STATUS_PUBLICHED = 1;
+    const STATUS_DRAFT = 2;
+
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
@@ -25,23 +30,19 @@ class Article
     #[ORM\Column(type: Types::TEXT)]
     private ?string $content = null;
 
-    #[ORM\OneToMany(mappedBy: 'article', targetEntity: Category::class)]
-    private Collection $Category;
-
-    #[ORM\OneToMany(mappedBy: 'article', targetEntity: User::class)]
-    private Collection $createdBy;
-
     #[ORM\Column]
     private ?\DateTimeImmutable $createdAt = null;
 
     #[ORM\Column]
     private ?\DateTimeImmutable $updatedAt = null;
 
-    public function __construct()
-    {
-        $this->Category = new ArrayCollection();
-        $this->createdBy = new ArrayCollection();
-    }
+    #[ORM\ManyToOne(inversedBy: 'articles')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Category $category = null;
+
+    #[ORM\ManyToOne(inversedBy: 'articles')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?User $createdBy = null;
 
     public function getId(): ?int
     {
@@ -84,66 +85,6 @@ class Article
         return $this;
     }
 
-    /**
-     * @return Collection<int, Category>
-     */
-    public function getCategory(): Collection
-    {
-        return $this->Category;
-    }
-
-    public function addCategory(Category $category): self
-    {
-        if (!$this->Category->contains($category)) {
-            $this->Category->add($category);
-            $category->setArticle($this);
-        }
-
-        return $this;
-    }
-
-    public function removeCategory(Category $category): self
-    {
-        if ($this->Category->removeElement($category)) {
-            // set the owning side to null (unless already changed)
-            if ($category->getArticle() === $this) {
-                $category->setArticle(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, User>
-     */
-    public function getCreatedBy(): Collection
-    {
-        return $this->createdBy;
-    }
-
-    public function addCreatedBy(User $createdBy): self
-    {
-        if (!$this->createdBy->contains($createdBy)) {
-            $this->createdBy->add($createdBy);
-            $createdBy->setArticle($this);
-        }
-
-        return $this;
-    }
-
-    public function removeCreatedBy(User $createdBy): self
-    {
-        if ($this->createdBy->removeElement($createdBy)) {
-            // set the owning side to null (unless already changed)
-            if ($createdBy->getArticle() === $this) {
-                $createdBy->setArticle(null);
-            }
-        }
-
-        return $this;
-    }
-
     public function getCreatedAt(): ?\DateTimeImmutable
     {
         return $this->createdAt;
@@ -164,6 +105,30 @@ class Article
     public function setUpdatedAt(\DateTimeImmutable $updatedAt): self
     {
         $this->updatedAt = $updatedAt;
+
+        return $this;
+    }
+
+    public function getCategory(): ?Category
+    {
+        return $this->category;
+    }
+
+    public function setCategory(?Category $category): self
+    {
+        $this->category = $category;
+
+        return $this;
+    }
+
+    public function getCreatedBy(): ?User
+    {
+        return $this->createdBy;
+    }
+
+    public function setCreatedBy(?User $createdBy): self
+    {
+        $this->createdBy = $createdBy;
 
         return $this;
     }

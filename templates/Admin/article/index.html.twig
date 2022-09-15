@@ -1,4 +1,4 @@
-{% extends '../../base.html.twig' %}
+{% extends 'base.html.twig' %}
 
 {% block title %}Article index{% endblock %}
 
@@ -11,7 +11,8 @@
                 <th>Id</th>
                 <th>Title</th>
                 <th>Status</th>
-                <th>Content</th>
+                <th>Category</th>
+                <th>CreatedBy</th>
                 <th>CreatedAt</th>
                 <th>UpdatedAt</th>
                 <th>actions</th>
@@ -23,7 +24,8 @@
                 <td>{{ article.id }}</td>
                 <td>{{ article.title }}</td>
                 <td>{{ article.status }}</td>
-                <td>{{ article.content }}</td>
+                <td>{{ article.category }}</td>
+                <td>{{ article.createdBy }}</td>
                 <td>{{ article.createdAt ? article.createdAt|date('Y-m-d H:i:s') : '' }}</td>
                 <td>{{ article.updatedAt ? article.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
                 <td>
