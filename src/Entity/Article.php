@@ -28,9 +28,19 @@ class Article
     #[ORM\OneToMany(mappedBy: 'article', targetEntity: Category::class)]
     private Collection $Category;
 
+    #[ORM\OneToMany(mappedBy: 'article', targetEntity: User::class)]
+    private Collection $createdBy;
+
+    #[ORM\Column]
+    private ?\DateTimeImmutable $createdAt = null;
+
+    #[ORM\Column]
+    private ?\DateTimeImmutable $updatedAt = null;
+
     public function __construct()
     {
         $this->Category = new ArrayCollection();
+        $this->createdBy = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -100,6 +110,60 @@ class Article
                 $category->setArticle(null);
             }
         }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, User>
+     */
+    public function getCreatedBy(): Collection
+    {
+        return $this->createdBy;
+    }
+
+    public function addCreatedBy(User $createdBy): self
+    {
+        if (!$this->createdBy->contains($createdBy)) {
+            $this->createdBy->add($createdBy);
+            $createdBy->setArticle($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCreatedBy(User $createdBy): self
+    {
+        if ($this->createdBy->removeElement($createdBy)) {
+            // set the owning side to null (unless already changed)
+            if ($createdBy->getArticle() === $this) {
+                $createdBy->setArticle(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getCreatedAt(): ?\DateTimeImmutable
+    {
+        return $this->createdAt;
+    }
+
+    public function setCreatedAt(\DateTimeImmutable $createdAt): self
+    {
+        $this->createdAt = $createdAt;
+
+        return $this;
+    }
+
+    public function getUpdatedAt(): ?\DateTimeImmutable
+    {
+        return $this->updatedAt;
+    }
+
+    public function setUpdatedAt(\DateTimeImmutable $updatedAt): self
+    {
+        $this->updatedAt = $updatedAt;
 
         return $this;
     }
