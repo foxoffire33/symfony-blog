@@ -46,7 +46,7 @@
                 <a href="{{ url('app_article_show',{'id': article.id}) }}" class="text-3xl font-bold hover:text-gray-700 pb-4">{{ article.title }}</a>
                 <p href="#" class="text-sm pb-3">
                     By <a href="#" class="font-semibold hover:text-gray-800">{{ article.createdBy }}</a>, Published on {{ article.updatedAt|date }},</p>
-                <a href="{{ url('app_article_show',{'id': article.id}) }}" class="pb-6">{{ article.content }}</a>
+                <a href="{{ url('app_article_show',{'id': article.id}) }}" class="pb-6">{{ article.content|striptags[:300] ~ '...' }}</a>
                 <a href="{{ url('app_article_show',{'id': article.id}) }}" class="uppercase text-gray-800 hover:text-black">Continue Reading
                     <svg class="svg-inline--fa fa-arrow-right fa-w-14" aria-hidden="true" focusable="false"
                          data-prefix="fas" data-icon="arrow-right" role="img" xmlns="http://www.w3.org/2000/svg"
