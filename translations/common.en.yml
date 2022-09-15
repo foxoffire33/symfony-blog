@@ -1,3 +1,5 @@
 common:
   created: 'Created By'
   AuthenticatedAsUser: 'logged in userEmail'
+  login: 'Login'
+  register: 'Register'
