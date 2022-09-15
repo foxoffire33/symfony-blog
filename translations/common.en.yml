@@ -1,0 +1,3 @@
+common:
+  created: 'Created By'
+  AuthenticatedAsUser: 'logged in userEmail'
